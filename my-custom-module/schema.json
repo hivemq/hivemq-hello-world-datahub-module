@@ -1,0 +1,5 @@
+{
+  "id": "${instanceId}-simple-json",
+  "type": "JSON",
+  "schemaDefinition": "e30="
+}

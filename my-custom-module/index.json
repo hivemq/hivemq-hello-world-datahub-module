@@ -1,0 +1,29 @@
+{
+    "name": "My first custom module",
+    "description": "My first custom module description",
+    "maintainers": [
+        {
+            "name": "my required name",
+            "email": "my-optional-email-address@provider.com",
+            "url": "https://my-optional.website.com"
+        }
+    ],
+    "version": "1.0.0",
+    "requiredSystemVersions": [
+        "hivemq-enterprise/4.34.0"
+    ],
+    "resources": {
+        "files": [
+            {
+                "type": "application/vnd+hivemq.data-policy+json",
+                "path": "data-policy.json.vm",
+                "name": "Data Policy to handle non-JSON messages"
+            },
+            {
+                "type": "application/vnd+hivemq.schema+json",
+                "path": "schema.json",
+                "name": "Simple JSON schema"
+            }
+        ]
+    }
+}

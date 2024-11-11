@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "topicFilter": {
+      "type": "string",
+      "default": "#",
+      "title": "Topic filter matching",
+      "description": "The PUBLISH message topic filter to which the instance applies"
+    }
+  }
+}

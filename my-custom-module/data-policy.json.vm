@@ -1,0 +1,53 @@
+{
+  "id": "${instanceId}-my-custom-policy",
+  "matching": {
+    "topicFilter": "${topicFilter}"
+  },
+  "validation": {
+    "validators": [
+      {
+        "type": "schema",
+        "arguments": {
+          "strategy": "ALL_OF",
+          "schemas": [
+            {
+              "schemaId": "${instanceId}-simple-json",
+              "version": "latest"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "onSuccess": {
+    "pipeline": [
+      {
+        "id": "success-log-operation",
+        "functionId": "System.log",
+        "arguments": {
+          "level": "INFO",
+          "message": "The client ${clientId} sent a valid JSON message."
+        }
+      }
+    ]
+  },
+  "onFailure": {
+    "pipeline": [
+      {
+        "id": "fail-log-operation",
+        "functionId": "System.log",
+        "arguments": {
+          "level": "ERROR",
+          "message": "The client ${clientId} sent an invalid message: ${validationResult}"
+        }
+      },
+      {
+        "id": "fail-drop-operation",
+        "functionId": "Mqtt.drop",
+        "arguments": {
+          "reasonString": "The message you sent was a not in JSON format."
+        }
+      }
+    ]
+  }
+}
