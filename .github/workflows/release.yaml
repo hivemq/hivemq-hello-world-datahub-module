@@ -1,0 +1,45 @@
+name: Release a Module Version
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  create-a-new-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+
+      - name: Compile the modules
+        id: compile_the_modules
+        run: |
+          cd modules
+          for d in */ ; do 
+            d=${d%%+(/)}
+            version=$(jq -r '.version' $d/index.json)
+            filename= ${d}-${version}.module
+            zip -z $filename
+            echo $filename >> release_notes.txt
+          done
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+            tag_name: ${{ github.ref }}
+            release_name: Release ${{ github.ref }}
+            body_path: modules/release_notes.txt
+            draft: false
+            prerelease: false
+      - name: upload artifacts
+        id: upload_artifacts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for module in modules/*.module; do
+            gh release upload ${{ github.ref }}
+          done
+          
