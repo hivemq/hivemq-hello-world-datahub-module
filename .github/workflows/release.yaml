@@ -40,6 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for module in modules/*.module; do
-            gh release upload ${{ github.ref }}
+            gh release upload ${{ github.ref }} $module
           done
           
