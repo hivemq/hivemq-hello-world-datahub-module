@@ -19,8 +19,8 @@ jobs:
           for d in */ ; do 
             d=${d%/}
             version=$(jq -r '.version' $d/index.json)
-            filename= ${d}-${version}.module
-            zip -z $filename
+            filename=${d}-${version}.module
+            zip -r $filename $d
             echo $filename >> release_notes.txt
           done
       - name: Create Release
