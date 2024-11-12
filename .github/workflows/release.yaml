@@ -1,8 +1,11 @@
-name: Release a Module Version
+name: Create a release
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
+    inputs:
+      releaseName:
+        description: 'The name for the release'
+        required: true
+        type: string
 
 jobs:
   create-a-new-release:
@@ -20,16 +23,13 @@ jobs:
             version=$(jq -r '.version' $d/index.json)
             filename=${d}-${version}.module
             zip -r $filename $d
+            echo "Updated $module" >> file_notes.txt
+
           done
-      - name: Attach Modules to Release
-        id: attach_modules
+      - name: Create the release
+        id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          for module in modules/*.module; do
-            gh release upload ${{ github.ref_name }} $module
-            echo "Updated $module" >> file_notes.txt
-          done
-          gh release edit ${{ github.ref_name }} --notes-file file_notes.txt
-          
-        
+          gh release create ${{ inputs.releaseName }} modules/*.module --notes-file modules/file_notes.txt
+     
