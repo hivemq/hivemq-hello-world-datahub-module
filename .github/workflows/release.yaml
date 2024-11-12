@@ -1,8 +1,7 @@
 name: Release a Module Version
-
 on:
   release:
-    types: [published]
+    types: [created,published]
 
 jobs:
   create-a-new-release:
