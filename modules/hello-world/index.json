@@ -6,7 +6,7 @@
       "name": "hello-world-maintainer"
     }
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "requiredSystemVersions": [
     "hivemq-enterprise/4.34.0"
   ],
@@ -21,6 +21,11 @@
         "type": "application/vnd+hivemq.schema+json",
         "path": "schema.json",
         "name": "Simple JSON schema"
+      },
+      {
+        "type": "application/vnd+hivemq.script+json",
+        "path": "script.json",
+        "name": "Script to add timestamp"
       }
     ]
   }
