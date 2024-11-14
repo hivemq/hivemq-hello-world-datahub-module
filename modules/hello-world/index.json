@@ -6,7 +6,7 @@
       "name": "hello-world-maintainer"
     }
   ],
-  "version": "1.1.0",
+  "version": "1.0.0",
   "requiredSystemVersions": [
     "hivemq-enterprise/4.34.0"
   ],
