@@ -21,6 +21,11 @@
         "type": "application/vnd+hivemq.schema+json",
         "path": "schema.json",
         "name": "Simple JSON schema"
+      },
+      {
+        "type": "application/vnd+hivemq.script+json",
+        "path": "script.json",
+        "name": "Script to add timestamp"
       }
     ]
   }

@@ -1,5 +1,5 @@
 {
-  "id": "${instanceId}-my-custom-policy",
+  "id": "my-custom-policy-${instanceId}",
   "matching": {
     "topicFilter": "${topicFilter}"
   },
@@ -11,7 +11,7 @@
           "strategy": "ALL_OF",
           "schemas": [
             {
-              "schemaId": "${instanceId}-simple-json",
+              "schemaId": "simple-json-${instanceId}",
               "version": "latest"
             }
           ]
@@ -29,6 +29,30 @@
           "message": "The client ${clientId} sent a valid JSON message."
         }
       }
+      #if( ${addsTimestampToPayload} == "true")
+        ,
+         {
+                "id": "operation-2eng0",
+                "functionId": "Serdes.deserialize",
+                "arguments": {
+                  "schemaId": "simple-json-${instanceId}",
+                  "schemaVersion": "latest"
+                }
+              },
+              {
+               "id": "operation-ek2Mx",
+                "functionId": "fn:adds-timestamp-script-${instanceId}:latest",
+                "arguments": {}
+              },
+              {
+                "id": "operation-4DBF3",
+                "functionId": "Serdes.serialize",
+                "arguments": {
+                  "schemaId": "simple-json-${instanceId}",
+                  "schemaVersion": "latest"
+                }
+              }
+      #end
     ]
   },
   "onFailure": {
@@ -40,7 +64,9 @@
           "level": "ERROR",
           "message": "The client ${clientId} sent an invalid message: ${validationResult}"
         }
-      },
+      }
+      #if ( ${dropFailedMessages} == "true" )
+      ,
       {
         "id": "fail-drop-operation",
         "functionId": "Mqtt.drop",
@@ -48,6 +74,7 @@
           "reasonString": "The message you sent was a not in JSON format."
         }
       }
+      #end
     ]
   }
 }
