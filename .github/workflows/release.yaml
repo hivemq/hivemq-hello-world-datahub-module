@@ -1,0 +1,35 @@
+name: Create a release
+on:
+  workflow_dispatch:
+    inputs:
+      releaseName:
+        description: 'The name for the release'
+        required: true
+        type: string
+
+jobs:
+  create-a-new-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+
+      - name: Compile the modules
+        id: compile_the_modules
+        run: |
+          cd modules
+          for d in */ ; do 
+            d=${d%/}
+            version=$(jq -r '.version' $d/index.json)
+            filename=${d}-${version}.module
+            zip -r $filename $d
+            echo "Updated $module" >> file_notes.txt
+
+          done
+      - name: Create the release
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ inputs.releaseName }} modules/*.module --notes-file modules/file_notes.txt
+     
