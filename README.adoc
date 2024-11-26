@@ -3,6 +3,7 @@
 :hivemq-datahub-policy-docs: {hivemq-link}/docs/hivemq/latest/data-hub/policies.html
 :hivemq-datahub-schemas-docs: {hivemq-link}/docs/hivemq/latest/data-hub/schemas.html
 :hivemq-datahub-scripts-docs: {hivemq-link}/docs/hivemq/latest/data-hub/transformations.html
+:hivemq-datahub-interpolation-docs: {hivemq-link}/docs/hivemq/latest/data-hub/actions.html#string-interpolation
 :hivemq-community: {hivemq-link}/community/
 
 = HiveMQ 'Hello World' Data Hub Module Example
@@ -25,6 +26,17 @@ Custom modules must consist of a folder with the following files:
 - At least one {hivemq-datahub-policy-docs}[policy], referenced in the  `index.json` file. This can be either a data or behavioural policy. In this example, we show a simple data policy which validates if the incoming message is JSON and runs a short script to include a timestamp if this is the case.
 - All {hivemq-datahub-schemas-docs}[schemas] and {hivemq-datahub-scripts-docs}[scripts] referenced in the policy.
 - `variables.json`: This file defines the input parameters that can be used to configure the module. You can use the defined input parameters in resources such as your `schema.json` or `data-policy.json.vm`. If no variables are defined, the file still must exist with just empty `{}`.
+
+=== Reserved variables
+
+Reserved variables are predefined by HiveMQ and must not be overwritten in the `variables.json` file:
+
+- `${instanceId}`: Used in identifiers of schemas, scripts and policies. eg. `"id": "my-custom-policy-${instanceId}"`. It's very important to use this variable so that every module instance can create its own resources.
+- All variables used for {hivemq-datahub-interpolation-docs}[String Interpolation] such as `${clientId}` and `${topic}`.
+
+=== Available functions
+
+- `$base64.encode()`: This function allows you to encode your schema definitions and script sources into base64. For example, `$base64.encode('{}')` results in `e30=`.
 
 == Import into the Broker
 
