@@ -29,10 +29,14 @@ Custom modules must consist of a folder with the following files:
 
 === Reserved variables
 
-These variables are already defined by HiveMQ and must not be overwritten in the `variables.json` file:
+Reserved variables are predefined by HiveMQ and must not be overwritten in the `variables.json` file:
 
 - `${instanceId}`: Used in identifiers of schemas, scripts and policies. eg. `"id": "my-custom-policy-${instanceId}"`. It's very important to use this variable so that every module can create its own resources.
-- All variables used for {hivemq-datahub-interpolation-docs}[String Interpolation] like `${clientID}` or `${topic}`.
+- All variables used for {hivemq-datahub-interpolation-docs}[String Interpolation] such as `${clientID}` and `${topic}`.
+
+=== Available functions
+
+- `$base64.encode()`: This function allows you to encode your schema definitions and script sources into base64. For example, `$base64.encode('{}')` results in `e30=`.
 
 == Import into the Broker
 
