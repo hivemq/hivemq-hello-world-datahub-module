@@ -31,8 +31,8 @@ Custom modules must consist of a folder with the following files:
 
 Reserved variables are predefined by HiveMQ and must not be overwritten in the `variables.json` file:
 
-- `${instanceId}`: Used in identifiers of schemas, scripts and policies. eg. `"id": "my-custom-policy-${instanceId}"`. It's very important to use this variable so that every module can create its own resources.
-- All variables used for {hivemq-datahub-interpolation-docs}[String Interpolation] such as `${clientID}` and `${topic}`.
+- `${instanceId}`: Used in identifiers of schemas, scripts and policies. eg. `"id": "my-custom-policy-${instanceId}"`. It's very important to use this variable so that every module instance can create its own resources.
+- All variables used for {hivemq-datahub-interpolation-docs}[String Interpolation] such as `${clientId}` and `${topic}`.
 
 === Available functions
 
