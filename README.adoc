@@ -12,26 +12,35 @@ image:https://img.shields.io/github/v/release/hivemq/hivemq-hello-world-datahub-
 image:https://img.shields.io/github/license/hivemq/hivemq-hello-world-datahub-module?style=for-the-badge&color=brightgreen[GitHub,link=LICENSE]
 
 == Purpose
+
 This repository contains a simple 'Hello World' example of a custom {hivemq-datahub-module-docs}[Data Hub Module]
 , intended for use with the {hivemq-link}[HiveMQ MQTT Broker].
 
-This example is intended to show the files and metadata required to create a custom working module, as well as demonstrate how to implement some simple working Data Hub functionality using a custom module.  
+This example is intended to show the files and metadata required to create a custom working module, as well as demonstrate how to implement some simple working Data Hub functionality using a custom module.
 This repo is also intended to be cloned and adapted for your own custom module needs, and to function as a basic starter template.
 
 == Structure of the Custom Module
 
 Custom modules must consist of a folder with the following files:
 
-- `index.json`: This file contains the metadata for the custom module. It includes details that will be shown in the Control Center, such as the name of the module, a short description, and the version of the module.  It can also be used to set the the minimum HiveMQ Broker version required to use the custom module. It must also list the contents of the custom module.
-- At least one {hivemq-datahub-policy-docs}[policy], referenced in the  `index.json` file. This can be either a data or behavioural policy. In this example, we show a simple data policy which validates if the incoming message is JSON and runs a short script to include a timestamp if this is the case.
+- `index.json`: This file contains the metadata for the custom module.
+It includes details that will be shown in the Control Center, such as the name of the module, a short description, and the version of the module.
+It can also be used to set the minimum HiveMQ Broker version required to use the custom module.
+It must also list the contents of the custom module.
+- At least one {hivemq-datahub-policy-docs}[policy], referenced in the  `index.json` file.
+This can be either a data or behavioral policy.
+In this example, we show a simple data policy which validates if the incoming message is JSON and runs a short script to include a timestamp if this is the case.
 - All {hivemq-datahub-schemas-docs}[schemas] and {hivemq-datahub-scripts-docs}[scripts] referenced in the policy.
-- `variables.json`: This file defines the input parameters that can be used to configure the module. You can use the defined input parameters in resources such as your `schema.json` or `data-policy.json.vm`. If no variables are defined, the file still must exist with just empty `{}`.
+- `variables.json`: This file defines the input parameters that can be used to configure the module.
+You can use the defined input parameters in resources such as your `schema.json` or `data-policy.json.vm`.
+If no variables are defined, the file still must exist with just empty `{}`.
 
 === Reserved variables
 
 Reserved variables are predefined by HiveMQ and must not be overwritten in the `variables.json` file:
 
-- `${instanceId}`: Used in identifiers of schemas, scripts and policies. eg. `"id": "my-custom-policy-${instanceId}"`. It's very important to use this variable so that every module instance can create its own resources.
+- `${instanceId}`: Used in identifiers of schemas, scripts and policies. eg. `"id": "my-custom-policy-${instanceId}"`.
+It's very important to use this variable so that every module instance can create its own resources.
 - All variables used for {hivemq-datahub-interpolation-docs}[String Interpolation] such as `${clientId}` and `${topic}`.
 
 === Available functions
@@ -40,7 +49,8 @@ Reserved variables are predefined by HiveMQ and must not be overwritten in the `
 
 == Import into the Broker
 
-To import the custom module into your Broker, first zip the folder, including the files. This zip file can then be uploaded via Data Hub within the Control Center.
+To import the custom module into your Broker, first zip the folder, including the files.
+This zip file can then be uploaded via Data Hub within the Control Center.
 
 == Support
 
