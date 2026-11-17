@@ -1,5 +1,6 @@
 :hivemq-link: https://www.hivemq.com
 :hivemq-datahub-module-docs: {hivemq-link}/docs/hivemq/latest/data-hub/modules.html#hivemq-modules-for-data-hub
+:hivemq-datahub-module-spec-docs: {hivemq-link}/docs/hivemq/latest/data-hub/module-specification.html
 :hivemq-datahub-policy-docs: {hivemq-link}/docs/hivemq/latest/data-hub/policies.html
 :hivemq-datahub-schemas-docs: {hivemq-link}/docs/hivemq/latest/data-hub/schemas.html
 :hivemq-datahub-scripts-docs: {hivemq-link}/docs/hivemq/latest/data-hub/transformations.html
@@ -35,6 +36,10 @@ In this example, we show a simple data policy which validates if the incoming me
 You can use the defined input parameters in resources such as your `schema.json` or `data-policy.json.vm`.
 If no variables are defined, the file still must exist with just empty `{}`.
 
+The `index.json` file lists each resource by its path relative to this folder.
+All files of the module must be inside this folder.
+For the complete rules, see {hivemq-datahub-module-spec-docs}#module-file-format-structure[Module File Format and Structure].
+
 === Reserved variables
 
 Reserved variables are predefined by HiveMQ and must not be overwritten in the `variables.json` file:
@@ -45,11 +50,24 @@ It's very important to use this variable so that every module instance can creat
 
 === Available functions
 
-- `$base64.encode()`: This function allows you to encode your schema definitions and script sources into base64. For example, `$base64.encode('{}')` results in `e30=`.
+The resource files are https://velocity.apache.org/engine/2.4/user-guide.html[Apache Velocity] templates.
+In addition to Velocity directives such as `#set` and `#if`, the following functions are available:
+
+- `$base64.encode()`: This function allows you to encode your schema definitions and script sources into base64.
+For example, `$base64.encode('{}')` results in `e30=`.
+- `$base64.include()`: This function encodes the content of a file in the module folder into base64.
+For example, `$base64.include('schema-definition.json')`.
+- `#include()`: This directive inserts the content of a file in the module folder without rendering it.
+This example combines it with `$base64.encode()` in `schema.json` and `script.json`, for example `#set( $schema = "#include('schema-definition.json')")` and `"schemaDefinition": "$base64.encode($schema)"`.
+- `#parse()`: This directive inserts a file in the module folder and renders it as a template.
+
+All paths are relative to the module folder and must point to a file inside it.
+For the complete list, see {hivemq-datahub-module-spec-docs}#resource-templates[Resource Templates].
 
 == Import into the Broker
 
 To import the custom module into your Broker, first zip the folder, including the files.
+Do not add other files or folders next to this folder in the archive; the `__MACOSX` folder that the macOS Finder adds is ignored.
 This zip file can then be uploaded via Data Hub within the Control Center.
 
 == Support
