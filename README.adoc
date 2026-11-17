@@ -51,7 +51,7 @@ It's very important to use this variable so that every module instance can creat
 === Available functions
 
 The resource files are https://velocity.apache.org/engine/2.4/user-guide.html[Apache Velocity] templates.
-In addition to Velocity directives such as `#set` and `#if`, the following functions are available:
+In addition to the Velocity directives `#set`, `#if`, `#elseif`, `#else`, `#foreach`, and `#break`, the following functions are available:
 
 - `$base64.encode()`: This function allows you to encode your schema definitions and script sources into base64.
 For example, `$base64.encode('{}')` results in `e30=`.
